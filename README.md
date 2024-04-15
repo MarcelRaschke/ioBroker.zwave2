@@ -40,6 +40,36 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+### 3.1.0 (2023-09-27)
+Updated `zwave-js` to `10.23.6`. This includes the following changes:
+* Added support for `Security S2` multicast
+* Added support for parsing additional information from `Notification CC Reports`. Note that this may change the values reported for Door/Window sensors! If you rely on the old behavior, use the new `Door state (simple)` value instead.
+* Added support for `Energy Production CC` and `Window Covering CC`
+* On devices where legacy alarm values are mapped, the resulting `Notification` values are now created during the interview.
+* Fixed an issue where communication with a node included with `Security S2` was not always using encryption.
+* Fixed an issue where the Z-Wave stack would not start on Windows systems
+* Z-Wave controllers hosted remotely over TCP can now be discovered using mDNS
+* Disconnects of Z-Wave controllers hosted remotely over TCP are now detected again
+* All commands contained in a `Multi Command CC` are now properly handled
+* Failures while assigning routes to nodes no longer mark the node as dead (unless they actually are)
+* Values for unsupported `Door Lock CC` features are no longer created
+* Several reliability/correctness improvements for device interviews
+* Auto-assign routes between nodes after creating a new association
+* Values for `Battery`, `Meter`, `Multilevel Switch` and (in some cases) `Notification CC` are now queried periodically or on device wakeup
+* Notification variables (like Lock jammed) are now updated when another received report indicates a change, even if the device did not update the notification variable itself.
+* Fixed a startup crash that happens when the controller returns an empty list of nodes
+* Fixed a crash that happens when message from an unknown node was received
+* Several improvements for auto-assigning Lifeline associations
+* Lots of new and updated configuration files, see [Z-Wave JS releases](https://github.com/zwave-js/node-zwave-js/releases) for details
+
+### 3.0.5 (2023-01-28)
+Updated `zwave-js` to `10.5.4`. This includes the following changes:
+* Fixed a memory leak caused by a dependency
+* Fixed an issue where multiple re-interview tasks for sleeping nodes could be queued and would be executed in parallel
+* Fixed an issue where firmware updates could use a too large fragment size after upgrading to v10, causing the update to fail
+* Several improvements related to `Security S2`
+* New and updated configuration files, see [Z-Wave JS releases](https://github.com/zwave-js/node-zwave-js/releases) for details
+
 ### 3.0.4 (2022-09-21)
 Updated `zwave-js` to `10.2.0`. This includes the following changes:
 * Fixed an issue where the possible states for `Notification` values could be incomplete
@@ -52,26 +82,11 @@ Fixed some more communication issues. If a device isn't working properly after u
 ### 3.0.2 (2022-08-30)
 * Fixed some crashes and communication issues
 
-### 3.0.1 (2022-08-27)
-* Fixed crashes related to missing or incorrectly loaded dependencies
-
-### 3.0.0 (2022-08-25)
-Updated `zwave-js` to `10.0.0`. This includes a ton of changes, including:
-* Dropped support for Node.js 12
-* Several improvements to secure communication, especially with Security S2
-* Changed how nodes are sent to sleep, preventing the queue from stalling when the node is already sleeping
-* Changed how `Supervision CC Reports` are sent out, preventing the queue from stalling
-* Obfuscated more sensitive data in logfiles
-* Fixed a bug where commands that should be discarded would still store their values
-* Improved the handling of incoming commands which are received out of order
-* Made it possible to disable SmartStart provisioning entries. When excluding a node, its provisioning entry will now be disabled instead of removed.
-* New and updated configuration files, see [Z-Wave JS releases](https://github.com/zwave-js/node-zwave-js/releases) for details
-
 ## License
 
 MIT License
 
-Copyright (c) 2019-2022 AlCalzone
+Copyright (c) 2019-2023 AlCalzone
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
